@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <fstream>
 
-std::vector<std::string> parseLine(std::string line) {
+std::vector<std::string> parseLine(std::string &line) {
     std::vector<std::string> params;
     
     if ((line.find("(") != std::string::npos) && line.find(")") != std::string::npos) {
@@ -35,16 +35,14 @@ std::vector<std::string> parseLine(std::string line) {
         params[2] = params[3];
         params[3] = swap;
     } else {
-        // Other instructions
-        int index = 0;
+        // For other instructions
 
         // Remove commas from the line
         line.erase(remove(line.begin(), line.end(), ','), line.end());
 
-        while (index < line.length()) {
-            index = line.find(" ");
-            params.push_back(line.substr(0, index));
-            line.erase(0, index + 1);
+        while (line.find(" ") != std::string::npos) {
+            params.push_back(line.substr(0, line.find(" ")));
+            line.erase(0, line.find(" ") + 1);
         }
         params.push_back(line);
     }
@@ -52,6 +50,7 @@ std::vector<std::string> parseLine(std::string line) {
     return params;
 }
 
+// Read the MIPS program from a file.
 std::vector<std::vector<std::string> > readProg(std::string filename) {
     std::ifstream file(filename);
     std::string line;
@@ -67,14 +66,16 @@ std::vector<std::vector<std::string> > readProg(std::string filename) {
 }
 
 int main() {
-    std::vector<std::vector<std::string> > instructions = readProg("test.txt");
 
-    for (int i = 0; i < instructions.size(); i++) {
-        for (int j = 0; j < instructions[i].size(); j++) {
-            std::cout << instructions[i][j] << " ";
-        }
-        std::cout << std::endl;
-    }
+    // Test code
+    // std::vector<std::vector<std::string> > instructions = readProg("test.txt");
+
+    // for (int i = 0; i < instructions.size(); i++) {
+    //     for (int j = 0; j < instructions[i].size(); j++) {
+    //         std::cout << instructions[i][j] << " ";
+    //     }
+    //     std::cout << std::endl;
+    // }
 
     return 0;
 }
